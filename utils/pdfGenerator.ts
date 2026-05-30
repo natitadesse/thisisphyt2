@@ -299,15 +299,134 @@ export const generateSoulManuscript = (results: NumerologyResult, profile: Numer
 
   drawFooter();
 
-  // --- PAGE 6: DIVINE TRIANGLE ---
+  // --- PAGE 7: DIVINE TRIANGLE WITH CHART ---
   if (results.divineTriangle) {
-    y = startNewPage("VI. The Divine Triangle");
+    y = startNewPage("VII. The Divine Triangle");
 
     doc.setFont("helvetica", "bold");
     doc.setFontSize(14);
     doc.setTextColor(GOLD[0], GOLD[1], GOLD[2]);
-    doc.text("The Pythagorean Trinity", margin, y);
-    y += 10;
+    doc.text("The Pythagorean Trinity Chart", margin, y);
+    y += 8;
+
+    doc.setFont("helvetica", "italic");
+    doc.setFontSize(8);
+    doc.setTextColor(120, 120, 120);
+    doc.text("Three sacred points defining your spiritual geometry", margin, y);
+    y += 15;
+
+    // Draw the triangle chart
+    const triangleCenterX = pageWidth / 2;
+    const triangleTopY = y + 20;
+    const triangleHeight = 80;
+    const triangleWidth = 140;
+
+    // Triangle coordinates
+    const topX = triangleCenterX;
+    const topY = triangleTopY;
+    const leftX = triangleCenterX - triangleWidth / 2;
+    const leftY = triangleTopY + triangleHeight;
+    const rightX = triangleCenterX + triangleWidth / 2;
+    const rightY = triangleTopY + triangleHeight;
+
+    // Draw filled triangle with gradient effect
+    doc.setFillColor(255, 248, 220);
+    doc.setDrawColor(GOLD[0], GOLD[1], GOLD[2]);
+    doc.setLineWidth(1);
+
+    // Draw the triangle
+    doc.setFillColor(250, 240, 210);
+    doc.triangle(topX, topY, leftX, leftY, rightX, rightY, "F");
+
+    // Draw the triangle outline
+    doc.setDrawColor(GOLD[0], GOLD[1], GOLD[2]);
+    doc.setLineWidth(1.5);
+    doc.line(topX, topY, leftX, leftY);
+    doc.line(leftX, leftY, rightX, rightY);
+    doc.line(rightX, rightY, topX, topY);
+
+    // Inner lines
+    doc.setDrawColor(GOLD[0], GOLD[1], GOLD[2]);
+    doc.setLineWidth(0.3);
+    doc.line(topX, topY, triangleCenterX, triangleTopY + triangleHeight * 0.6);
+    doc.line(leftX, leftY, triangleCenterX, triangleTopY + triangleHeight * 0.6);
+    doc.line(rightX, rightY, triangleCenterX, triangleTopY + triangleHeight * 0.6);
+
+    // Center point
+    doc.setFillColor(GOLD[0], GOLD[1], GOLD[2]);
+    doc.circle(triangleCenterX, triangleTopY + triangleHeight * 0.6, 2, "F");
+
+    // Top circle - First Vowel
+    doc.setFillColor(255, 250, 230);
+    doc.setDrawColor(GOLD[0], GOLD[1], GOLD[2]);
+    doc.setLineWidth(2);
+    doc.circle(topX, topY, 12, "S");
+    doc.setFillColor(GOLD[0], GOLD[1], GOLD[2]);
+    doc.circle(topX, topY, 10, "F");
+
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(16);
+    doc.setFont("helvetica", "bold");
+    doc.text(results.divineTriangle.firstVowelValue.toString(), topX, topY + 5, { align: "center" });
+
+    // Label for Top
+    doc.setTextColor(GOLD[0], GOLD[1], GOLD[2]);
+    doc.setFontSize(9);
+    doc.text("#" + results.divineTriangle.firstVowel.toString(), topX, topY - 18, { align: "center" });
+    doc.setFontSize(7);
+    doc.setTextColor(80, 80, 80);
+    doc.text("Inner Motivation", topX, topY - 13, { align: "center" });
+
+    // Bottom Left circle - Cornerstone
+    doc.setFillColor(255, 250, 230);
+    doc.setDrawColor(GOLD[0], GOLD[1], GOLD[2]);
+    doc.setLineWidth(2);
+    doc.circle(leftX, leftY, 12, "S");
+    doc.setFillColor(GOLD[0], GOLD[1], GOLD[2]);
+    doc.circle(leftX, leftY, 10, "F");
+
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(16);
+    doc.setFont("helvetica", "bold");
+    doc.text(results.divineTriangle.cornerstoneValue.toString(), leftX, leftY + 5, { align: "center" });
+
+    // Label for Left
+    doc.setTextColor(GOLD[0], GOLD[1], GOLD[2]);
+    doc.setFontSize(9);
+    doc.text("#" + results.divineTriangle.cornerstone.toString(), leftX - 22, leftY - 5, { align: "center" });
+    doc.setFontSize(7);
+    doc.setTextColor(80, 80, 80);
+    doc.text("Your Approach", leftX - 22, leftY, { align: "center" });
+
+    // Bottom Right circle - Capstone
+    doc.setFillColor(255, 250, 230);
+    doc.setDrawColor(GOLD[0], GOLD[1], GOLD[2]);
+    doc.setLineWidth(2);
+    doc.circle(rightX, rightY, 12, "S");
+    doc.setFillColor(GOLD[0], GOLD[1], GOLD[2]);
+    doc.circle(rightX, rightY, 10, "F");
+
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(16);
+    doc.setFont("helvetica", "bold");
+    doc.text(results.divineTriangle.capstoneValue.toString(), rightX, rightY + 5, { align: "center" });
+
+    // Label for Right
+    doc.setTextColor(GOLD[0], GOLD[1], GOLD[2]);
+    doc.setFontSize(9);
+    doc.text("#" + results.divineTriangle.capstone.toString(), rightX + 22, rightY - 5, { align: "center" });
+    doc.setFontSize(7);
+    doc.setTextColor(80, 80, 80);
+    doc.text("Your Conclusion", rightX + 22, rightY, { align: "center" });
+
+    // Continue below the triangle
+    y = leftY + 20;
+
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(10);
+    doc.setTextColor(GOLD[0], GOLD[1], GOLD[2]);
+    doc.text("Trinity Interpretation", margin, y);
+    y += 8;
 
     doc.setFont("helvetica", "italic");
     doc.setFontSize(9);
@@ -316,38 +435,62 @@ export const generateSoulManuscript = (results: NumerologyResult, profile: Numer
     doc.text(triInterpLines, margin, y);
     y += (triInterpLines.length * 5) + 12;
 
-    // Three columns for the triangle points
+    // Detailed meanings in three columns
+    y += 5;
     const colWidth = (contentWidth - 10) / 3;
     const boxX = [margin, margin + colWidth + 5, margin + (colWidth * 2) + 10];
 
-    [
-      { label: "First Vowel (Top)", val: results.divineTriangle.firstVowelValue, num: results.divineTriangle.firstVowel, meaning: results.divineTriangle.firstVowelMeaning, desc: "Inner Motivation" },
-      { label: "Cornerstone (Left)", val: results.divineTriangle.cornerstoneValue, num: results.divineTriangle.cornerstone, meaning: results.divineTriangle.cornerstoneMeaning, desc: "Your Approach" },
-      { label: "Capstone (Right)", val: results.divineTriangle.capstoneValue, num: results.divineTriangle.capstone, meaning: results.divineTriangle.capstoneMeaning, desc: "Your Conclusion" }
-    ].forEach((point, idx) => {
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(9);
+    doc.setTextColor(GOLD[0], GOLD[1], GOLD[2]);
+    doc.text("First Vowel", boxX[0], y);
+    doc.text("Cornerstone", boxX[1], y);
+    doc.text("Capstone", boxX[2], y);
+    y += 6;
+
+    const points = [
+      { val: results.divineTriangle.firstVowelValue, num: results.divineTriangle.firstVowel, meaning: results.divineTriangle.firstVowelMeaning },
+      { val: results.divineTriangle.cornerstoneValue, num: results.divineTriangle.cornerstone, meaning: results.divineTriangle.cornerstoneMeaning },
+      { val: results.divineTriangle.capstoneValue, num: results.divineTriangle.capstone, meaning: results.divineTriangle.capstoneMeaning }
+    ];
+
+    points.forEach((point, idx) => {
       doc.setFont("helvetica", "bold");
-      doc.setFontSize(11);
+      doc.setFontSize(12);
       doc.setTextColor(GOLD[0], GOLD[1], GOLD[2]);
-      doc.text(point.label, boxX[idx], y);
-
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(14);
-      doc.text(point.val, boxX[idx], y + 8);
-
-      doc.setFont("helvetica", "italic");
-      doc.setFontSize(8);
-      doc.setTextColor(120, 120, 120);
-      doc.text(`No. ${point.num}`, boxX[idx], y + 15);
-      doc.text(point.desc, boxX[idx], y + 20);
+      doc.text(point.val + " (#" + point.num + ")", boxX[idx], y);
 
       doc.setFont("helvetica", "normal");
       doc.setFontSize(7);
-      doc.setTextColor(100, 100, 100);
+      doc.setTextColor(80, 80, 80);
       const meaningLines = doc.splitTextToSize(point.meaning, colWidth - 2);
-      doc.text(meaningLines, boxX[idx], y + 26);
+      doc.text(meaningLines, boxX[idx], y + 6);
     });
 
-    y = pageHeight - 80;
+    y += 35;
+
+    // Sacred Trinity explanation
+    y += 5;
+    doc.setDrawColor(GOLD[0], GOLD[1], GOLD[2]);
+    doc.setLineWidth(0.3);
+    doc.line(margin, y, pageWidth - margin, y);
+    y += 8;
+
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(9);
+    doc.setTextColor(GOLD[0], GOLD[1], GOLD[2]);
+    doc.text("The Sacred Trinity Integration", margin, y);
+    y += 6;
+
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(8);
+    doc.setTextColor(100, 100, 100);
+    const trinityText = doc.splitTextToSize(
+      "The Divine Triangle is the Pythagorean Trinity of numerology - three points that define your spiritual geometry. Your cornerstone shows how you approach life's beginnings. Your first vowel reveals your inner motivation. Your capstone demonstrates how you complete endeavors. Together, these three numbers create your unique soul signature.",
+      contentWidth
+    );
+    doc.text(trinityText, margin, y);
+
     drawFooter();
   }
 
