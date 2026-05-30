@@ -299,6 +299,58 @@ export const generateSoulManuscript = (results: NumerologyResult, profile: Numer
 
   drawFooter();
 
+  // --- PAGE 6: DIVINE TRIANGLE ---
+  if (results.divineTriangle) {
+    y = startNewPage("VI. The Divine Triangle");
+
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(14);
+    doc.setTextColor(GOLD[0], GOLD[1], GOLD[2]);
+    doc.text("The Pythagorean Trinity", margin, y);
+    y += 10;
+
+    doc.setFont("helvetica", "italic");
+    doc.setFontSize(9);
+    doc.setTextColor(CHARCOAL[0], CHARCOAL[1], CHARCOAL[2]);
+    const triInterpLines = doc.splitTextToSize(results.divineTriangle.interpretation, contentWidth);
+    doc.text(triInterpLines, margin, y);
+    y += (triInterpLines.length * 5) + 12;
+
+    // Three columns for the triangle points
+    const colWidth = (contentWidth - 10) / 3;
+    const boxX = [margin, margin + colWidth + 5, margin + (colWidth * 2) + 10];
+
+    [
+      { label: "First Vowel (Top)", val: results.divineTriangle.firstVowelValue, num: results.divineTriangle.firstVowel, meaning: results.divineTriangle.firstVowelMeaning, desc: "Inner Motivation" },
+      { label: "Cornerstone (Left)", val: results.divineTriangle.cornerstoneValue, num: results.divineTriangle.cornerstone, meaning: results.divineTriangle.cornerstoneMeaning, desc: "Your Approach" },
+      { label: "Capstone (Right)", val: results.divineTriangle.capstoneValue, num: results.divineTriangle.capstone, meaning: results.divineTriangle.capstoneMeaning, desc: "Your Conclusion" }
+    ].forEach((point, idx) => {
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(11);
+      doc.setTextColor(GOLD[0], GOLD[1], GOLD[2]);
+      doc.text(point.label, boxX[idx], y);
+
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(14);
+      doc.text(point.val, boxX[idx], y + 8);
+
+      doc.setFont("helvetica", "italic");
+      doc.setFontSize(8);
+      doc.setTextColor(120, 120, 120);
+      doc.text(`No. ${point.num}`, boxX[idx], y + 15);
+      doc.text(point.desc, boxX[idx], y + 20);
+
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(7);
+      doc.setTextColor(100, 100, 100);
+      const meaningLines = doc.splitTextToSize(point.meaning, colWidth - 2);
+      doc.text(meaningLines, boxX[idx], y + 26);
+    });
+
+    y = pageHeight - 80;
+    drawFooter();
+  }
+
   // --- SAVE THE MANUSCRIPT ---
   const fileName = `${profile.fullName.replace(/\s+/g, '_')}_Soul_Manuscript.pdf`;
   doc.save(fileName);

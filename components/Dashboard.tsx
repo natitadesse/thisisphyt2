@@ -2,6 +2,9 @@
 import React, { useState } from 'react';
 import { NumerologyProfile, NumerologyResult } from '../types';
 import InterpretationCard from './InterpretationCard';
+import MasterNumbersSection from './MasterNumbersSection';
+import HealthInsightsSection from './HealthInsightsSection';
+import DivineTriangleChart from './DivineTriangleChart';
 import { getExpressionDescription } from '../utils/numerology';
 import { generateSoulManuscript } from '../utils/pdfGenerator';
 
@@ -280,6 +283,25 @@ const Dashboard: React.FC<Props> = ({ profile, results, onReset }) => {
            </div>
         </div>
       </section>
+
+      {/* DIVINE TRIANGLE */}
+      {results.divineTriangle && (
+        <DivineTriangleChart triangle={results.divineTriangle} />
+      )}
+
+      {/* MASTER NUMBERS */}
+      {results.masterNumbers && results.masterNumbers.length > 0 && (
+        <MasterNumbersSection masterNumbers={results.masterNumbers} />
+      )}
+
+      {/* HEALTH INSIGHTS */}
+      {results.healthInsights && results.healthInsights.length > 0 && (
+        <HealthInsightsSection
+          healthInsights={results.healthInsights}
+          soulNumber={results.soulNumber}
+          karmaNumber={results.karmaNumber}
+        />
+      )}
 
       <footer className="text-center pt-12 pb-24 border-t border-white/5">
         <button onClick={onReset} className="px-16 py-5 border border-amber-500/50 text-amber-500 font-cinzel rounded-full hover:bg-amber-500 hover:text-black transition-all duration-700 uppercase tracking-[0.4em] text-xs">Analyze New Soul</button>

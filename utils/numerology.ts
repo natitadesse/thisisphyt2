@@ -231,7 +231,12 @@ export const calculateProfile = (name: string, dob: string) => {
     colorAnalysis: { lifePathColor: getColor(lp), expressionColor: getColor(exp), soulUrgeColor: getColor(soul) },
     transits: { current: calculateTransitAtAge(currentAge), timeline: Array.from({ length: 10 }, (_, i) => calculateTransitAtAge(currentAge + i)) },
     personalYear: yearForecast[0], personalYearForecast: yearForecast, personalMonthForecast: monthForecast, personalWeekForecast: weekForecast, personalDayForecast: dayForecast,
-    hasMasterNumbers: MASTER_NUMBERS.includes(lp) || MASTER_NUMBERS.includes(exp)
+    hasMasterNumbers: MASTER_NUMBERS.includes(lp) || MASTER_NUMBERS.includes(exp),
+    soulNumber: bDay,
+    karmaNumber: bMonth,
+    masterNumbers: [],
+    healthInsights: [],
+    divineTriangle: null
   };
 };
 

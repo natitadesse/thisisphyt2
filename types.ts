@@ -38,6 +38,19 @@ export interface BridgeNumber {
   description: string;
 }
 
+export interface DivineTriangleData {
+  cornerstone: number;
+  cornerstoneValue: string;
+  cornerstoneMeaning: string;
+  capstone: number;
+  capstoneValue: string;
+  capstoneMeaning: string;
+  firstVowel: number;
+  firstVowelValue: string;
+  firstVowelMeaning: string;
+  interpretation: string;
+}
+
 export interface NumerologyResult {
   // 1-10 Core Numbers & Basics
   lifePath: number;
@@ -102,6 +115,9 @@ export interface NumerologyResult {
   personalDayForecast: VibrationalCycle[];
 
   hasMasterNumbers: boolean;
+  masterNumbers: MasterNumberInfo[];
+  healthInsights: HealthInsight[];
+  divineTriangle: DivineTriangleData | null;
 }
 
 export interface Pinnacle {
