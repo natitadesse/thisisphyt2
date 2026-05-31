@@ -2,6 +2,7 @@
 import { jsPDF } from "jspdf";
 import { NumerologyResult, NumerologyProfile } from "../types";
 import { getExpressionDescription } from "./numerology";
+import { calculateLifeExperiences } from "./lifeExperiences";
 
 /**
  * Generates a high-aesthetic PDF "Soul Manuscript" based on the Pythagorean lineage
@@ -275,7 +276,7 @@ export const generateSoulManuscript = (results: NumerologyResult, profile: Numer
 
   // --- PAGE 6: ORACLE FORECASTS ---
   y = startNewPage("VI. The Oracle Scroll");
-  
+
   y = drawSubHeader("Visionary 5-Year Forecast", y);
   results.personalYearForecast.forEach(yr => {
     y = drawDataRow(`Year ${yr.year}`, `Personal Year ${yr.number}`, y, yr.description);
@@ -298,6 +299,79 @@ export const generateSoulManuscript = (results: NumerologyResult, profile: Numer
   });
 
   drawFooter();
+
+  // --- PAGE 6B: LIFE EXPERIENCES CHART ---
+  const lifeExperiences = calculateLifeExperiences(profile.birthDate);
+  if (lifeExperiences) {
+    y = startNewPage("VI. Life Experiences Chart");
+
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(14);
+    doc.setTextColor(GOLD[0], GOLD[1], GOLD[2]);
+    doc.text("The Three Life Phases", margin, y);
+    y += 10;
+
+    doc.setFont("helvetica", "italic");
+    doc.setFontSize(9);
+    doc.setTextColor(CHARCOAL[0], CHARCOAL[1], CHARCOAL[2]);
+    doc.text("Your journey through Youth, Power, and Wisdom across 81 sacred years", margin, y);
+    y += 12;
+
+    // Three phase boxes
+    const phaseWidth = (contentWidth - 10) / 3;
+    const phaseX = [margin, margin + phaseWidth + 5, margin + (phaseWidth * 2) + 10];
+
+    lifeExperiences.phases.forEach((phase, idx) => {
+      doc.setDrawColor(GOLD[0], GOLD[1], GOLD[2]);
+      doc.setLineWidth(0.5);
+      doc.rect(phaseX[idx], y, phaseWidth, 60);
+
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(12);
+      doc.setTextColor(GOLD[0], GOLD[1], GOLD[2]);
+      doc.text(phase.name, phaseX[idx] + 3, y + 8);
+
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(11);
+      doc.setTextColor(CHARCOAL[0], CHARCOAL[1], CHARCOAL[2]);
+      doc.text(`Ages ${phase.startAge}-${phase.endAge}`, phaseX[idx] + 3, y + 16);
+
+      doc.setFont("helvetica", "italic");
+      doc.setFontSize(8);
+      doc.setTextColor(100, 100, 100);
+      const phaseLines = doc.splitTextToSize(phase.description, phaseWidth - 6);
+      doc.text(phaseLines, phaseX[idx] + 3, y + 24);
+    });
+
+    y += 68;
+
+    // Age milestones
+    y = drawSubHeader("Sacred Age Milestones", y);
+    const cornerPairs = [
+      { label: "Entry Point", letter: '0', val: 0 },
+      { label: "First Cycle", letter: 'B', val: 9 },
+      { label: "Second Cycle", letter: 'C', val: 18 },
+      { label: "Youth to Power", letter: 'D', val: 27 },
+      { label: "Power Foundation", letter: 'E', val: 36 },
+      { label: "Power Peak", letter: 'F', val: 45 },
+      { label: "Power to Wisdom", letter: 'G', val: 54 },
+      { label: "Wisdom Foundation", letter: 'H', val: 63 },
+      { label: "Complete Journey", letter: 'A', val: 81 }
+    ];
+
+    cornerPairs.forEach(corner => {
+      y = drawDataRow(`${corner.letter} - ${corner.label}`, `Age ${corner.val}`, y);
+    });
+
+    y += 8;
+    doc.setFont("helvetica", "italic");
+    doc.setFontSize(9);
+    doc.setTextColor(100, 100, 100);
+    const lifeInterpLines = doc.splitTextToSize(lifeExperiences.interpretation, contentWidth);
+    doc.text(lifeInterpLines, margin, y);
+
+    drawFooter();
+  }
 
   // --- PAGE 7: DIVINE TRIANGLE WITH CHART ---
   if (results.divineTriangle) {

@@ -5,7 +5,9 @@ import InterpretationCard from './InterpretationCard';
 import MasterNumbersSection from './MasterNumbersSection';
 import HealthInsightsSection from './HealthInsightsSection';
 import DivineTriangleChart from './DivineTriangleChart';
+import LifeExperiencesChart from './LifeExperiencesChart';
 import { getExpressionDescription } from '../utils/numerology';
+import { calculateLifeExperiences } from '../utils/lifeExperiences';
 import { generateSoulManuscript } from '../utils/pdfGenerator';
 
 interface Props {
@@ -287,6 +289,14 @@ const Dashboard: React.FC<Props> = ({ profile, results, onReset }) => {
       {/* DIVINE TRIANGLE */}
       {results.divineTriangle && (
         <DivineTriangleChart triangle={results.divineTriangle} />
+      )}
+
+      {/* LIFE EXPERIENCES CHART */}
+      {calculateLifeExperiences(profile.birthDate) && (
+        <LifeExperiencesChart
+          chart={calculateLifeExperiences(profile.birthDate)!}
+          currentAge={new Date().getFullYear() - new Date(profile.birthDate).getFullYear()}
+        />
       )}
 
       {/* MASTER NUMBERS */}
